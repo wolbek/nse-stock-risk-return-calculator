@@ -1,0 +1,561 @@
+{% load static %}
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<!-- Chart js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<!-- Line Awesome -->
+<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+<!-- Fontawesome -->
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+<!-- Zoom in chart -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"
+    integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.2.0/chartjs-plugin-zoom.min.js"
+    integrity="sha512-TT0wAMqqtjXVzpc48sI0G84rBP+oTkBZPgeRYIOVRGUdwJsyS3WPipsNh///ay2LJ+onCM23tipnz6EvEy2/UA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+
+<!-- Days in selection are market days -->
+<input type="checkbox" id="nav-toggle">
+<div class="sidebar">
+    <div class="sidebar-brand">
+        <h1><i class="fas fa-shapes"></i><span>Calculate</span></h1>
+    </div>
+    <div class="sidebar-menu">
+        <ul>
+            <li>
+                <a href="#priceOfStock" class="active"><span class="fas fa-rupee-sign"></span>
+                    <span>Price Of Stock</span></a>
+            </li>
+
+            <li>
+                <a href="#dailyReturnsOfStock"><i class="fas fa-chart-bar fa-lg"></i>
+                    <span>Daily Returns Of Stock</span></a>
+            </li>
+
+            <li>
+                <a href="#growthComparison"><span class="fas fa-chart-line"></span>
+                    <span>Growth Comparison</span></a>
+            </li>
+            <li>
+                <a href="#riskOfStock"><span class="las la-clipboard-list"></span>
+                    <span>Risk Of Stock</span></a>
+            </li>
+            <li>
+                <a href="#compoundInterest"><span class="las la-wallet"></span>
+                    <span>Compound Interest</span></a>
+            </li>
+            <li>
+                <a href="#totalReturns"><span class="fas fa-coins"></span>
+                    <span>Total Returns</span></a>
+            </li>
+            <li>
+                <a href="/.auth/logout"><span class="las la-share-square"></span>
+                    </span><span>Sign out</span></a>
+            </li>            
+        </ul>
+    </div>
+</div>
+
+<div class="main-content">
+    <header>
+        <h1>
+            <label for="nav-toggle">
+                <span class="las la-bars"></span>
+            </label>
+            NSE Stock Market
+        </h1>    
+        <input type="checkbox" name="" id="pointButton" checked>        
+    </header>
+
+    <main>
+        <div class="container">
+
+            <a name="priceOfStock"></a>
+            <div class="block">
+                <h2>Price Of Stock</h2>
+                <p>Check price of a stock over the selected time by providing ticker name.</p>
+                <form id="form1">
+                    <input type="text" placeholder="Ticker name" name="stock">
+                    <select name="time">
+                        <option value="1d">1 day</option>
+                        <option value="5d">5 days</option>
+                        <option value="1mo">1 month</option>
+                        <option value="3mo">3 months</option>
+                        <option value="6mo">6 months</option>
+                        <option value="1y">1 year</option>
+                        <option value="3y">3 years</option>
+                        <option value="5y">5 years</option>
+                        <option value="max">Max</option>
+                    </select>
+                    <br>
+                    <button type="button">Calculate</button>
+                </form>
+                <div style="height:80% !important; width:80% !important;">
+                    <canvas id="myChart1" style="zoom: 1.25;display: none;"></canvas>
+                </div>
+            </div>
+
+            <a name="dailyReturnsOfStock"></a>
+            <div class="block">
+                <h2>Daily Returns Of Stock</h2>
+                <p>Check daily returns of a stock by providing their ticker names.</p>
+                <form id="form2">
+                    <input type="text" placeholder="Ticker name" name="stock">
+                    <select name="time">
+                        <option value="1d">1 day</option>
+                        <option value="5d">5 days</option>
+                        <option value="1mo">1 month</option>
+                        <option value="3mo">3 months</option>
+                        <option value="6mo">6 months</option>
+                        <option value="1y">1 year</option>
+                        <option value="3y">3 years</option>
+                        <option value="5y">5 years</option>
+                        <option value="max">Max</option>
+                    </select>
+                    <br>
+                    <button type="button">Calculate</button>
+                </form>
+                <div style="height:80% !important; width:80% !important;">
+                    <canvas id="myChart2" style="zoom: 1.25;display: none;"></canvas>
+                </div>
+            </div>
+            <a name="growthComparison"></a>
+            <div class="block">
+                <h2>Growth Comparison</h2>
+                <p>Compare multiple stocks (e.g WIPRO, TATAMOTORS, HINDUNILVR) from same start point to see their
+                    performance
+                    by providing their ticker names . Use comma to separate them.</p>
+                <form id="form3">
+                    <input type="text" placeholder="Ticker names" name="stocks">
+                    <select name="time">
+                        <option value="1d">1 day</option>
+                        <option value="5d">5 days</option>
+                        <option value="1mo">1 month</option>
+                        <option value="3mo">3 months</option>
+                        <option value="6mo">6 months</option>
+                        <option value="1y">1 year</option>
+                        <option value="3y">3 years</option>
+                        <option value="5y">5 years</option>
+                    </select>
+                    <br>
+                    <button type="button">Calculate</button>
+                </form>
+                <div style="height:80% !important; width:80% !important;">
+                    <canvas id="myChart3" style="zoom: 1.25;display: none;"></canvas>
+                </div>
+            </div>
+            <a name="riskOfStock"></a>
+            <div class="block">
+                <h2>Risk Of Stock (Volatility)</h2>
+                <p>Check the risk of a stock by providing their ticker names.</p>
+                <form id="form4">
+                    <input type="text" placeholder="Ticker name" name="stock">
+                    <select name="time">
+                        <option value="5d">5 days</option>
+                        <option value="1mo">1 month</option>
+                        <option value="3mo">3 months</option>
+                        <option value="6mo">6 months</option>
+                        <option value="1y">1 year</option>
+                        <option value="3y">3 years</option>
+                        <option value="5y">5 years</option>
+                        <option value="max">Max</option>
+                    </select>
+                    <br>
+                    <button type="button">Calculate</button>
+                </form>
+            </div>
+
+            <a name="compoundInterest"></a>
+            <div class="block">
+                <h2>Compound Interest</h2>
+                <p>Check the returns of a stock by providing initial amount, years invested, and annual
+                    rate of interest.</p>
+                <form id="form5">
+                    <input type="text" placeholder="Initial Amount (in ₹)" name="initialAmount">
+                    <input type="text" placeholder="Years Invested" name="yearsInvested">
+                    <input type="text" placeholder="Rate Of Interest (in %)" name="rateOfInterest">
+                    <br>
+                    <button type="button">Calculate</button>
+                </form>
+            </div>
+
+            <a name="totalReturns"></a>
+            <div class="block">
+                <h2>Total Returns (Approx.)</h2>
+                <p>Check the total returns of a stock by providing their ticker names.</p>
+                <form id="form6">
+                    <input type="text" placeholder="Ticker name" name="stock">
+                    <select name="time">
+                        <option value="1d">1 day</option>
+                        <option value="5d">5 days</option>
+                        <option value="1mo">1 month</option>
+                        <option value="3mo">3 months</option>
+                        <option value="6mo">6 months</option>
+                        <option value="1y">1 year</option>
+                        <option value="3y">3 years</option>
+                        <option value="5y">5 years</option>
+                        <option value="max">Max</option>
+                    </select>
+                    <br>
+                    <button type="button">Calculate</button>
+                </form>
+            </div>
+
+        </div>
+
+    </main>
+</div>
+
+<script>
+
+    var myChart1;
+    var myChart2;
+    var myChart3;
+    var pointRadius = 3;
+    var pointHoverRadius = 4;
+
+
+    $("#form1 button").click(function (event) {
+        input = $("#form1 input[type='text']").val().trim();
+        if (input == '') {
+            alert("Enter a ticker");
+        }
+        else if (!/^[a-zA-Z]+$/.test(input)) {
+            alert("Enter proper ticker");
+        }
+        else {
+            $.ajax({
+                method: "POST",
+                url: "{% url 'priceOfStock' %}",
+                data: {
+                    stock: input,
+                    time: $("#form1 select").find(":selected").val(),
+                    csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
+                },
+                success: function (data) {
+                    if (data.status == 0) {
+                        alert("Enter a valid ticker");
+                    }
+                    else {
+                        $("#myChart1").css("display", "block");
+                        if (myChart1)
+                            myChart1.destroy();
+                        labels = data.date;
+                        items = data.price;
+
+                        var datasets = [{
+                            label: 'Price Of Stock',
+                            data: items,
+                            borderColor: '#1aafeb',
+                            pointRadius: pointRadius,
+                            pointHoverRadius: pointHoverRadius
+                        }]
+
+                        var ctx = document.getElementById("myChart1").getContext('2d');
+                        myChart1 = plot(ctx, 'line','Dates', 'Price (in ₹)', labels, datasets);
+                    }
+
+
+                }
+            })
+        }
+    })
+
+
+    $("#form2 button").click(function (event) {
+        input = $("#form2 input[type='text']").val().trim();
+        if (input == '') {
+            alert("Enter a ticker");
+        }
+        else if (!/^[a-zA-Z]+$/.test(input)) {
+            alert("Enter proper ticker");
+        }
+
+        else {
+            $.ajax({
+                method: "POST",
+                url: "{% url 'dailyReturnsOfStock' %}",
+                data: {
+                    stock: input,
+                    time: $("#form2 select").find(":selected").val(),
+                    csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
+                },
+                success: function (data) {
+                    if (data.status == 0) {
+                        alert("Enter a valid ticker");
+                    }
+                    else {
+                        $("#myChart2").css("display", "block");
+                        if (myChart2) {
+                            myChart2.destroy();
+                        }
+
+                        labels = data.date;
+                        items = data.simple_returns;
+
+                        var datasets = [{
+                            label: 'Daily Returns',
+                            data: items,
+                            borderColor: '#1aafeb',
+                            borderWidth:2,
+                            backgroundColor:'#1aafeb',                         
+                            pointRadius: pointRadius,
+                            pointHoverRadius: pointHoverRadius
+                        }]
+
+                        var ctx = document.getElementById("myChart2").getContext('2d');
+                        myChart2 = plot(ctx, 'bar','Dates', 'Simple Returns (in %)', labels, datasets);
+                    }
+
+
+                }
+            })
+        }
+    })
+
+    $("#form3 button").click(function (event) {
+        input = $("#form3 input[type='text']").val().trim();
+        if (input == '') {
+            alert("Enter tickers");
+        }
+        else if (!checkValid(input)) {
+            alert("Enter proper tickers");
+        }
+        else {
+            $.ajax({
+                method: "POST",
+                url: "{% url 'growthComparisonOfStocks' %}",
+                data: {
+                    stocks: input,
+                    time: $("#form3 select").find(":selected").val(),
+                    csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
+                },
+                success: function (data) {
+                    if (data.status == 0) {
+                        alert("Enter valid tickers");
+                    }
+                    else {
+                        $("#myChart3").css("display", "block");
+                        if (myChart3) {
+                            myChart3.destroy();
+                        }
+
+                        labels = data.date;
+                        var datasets = [];
+
+                        for (i = 0; i < data.tickers.length; i++) {
+                            datasets[i] = {
+                                label: data.tickers[i],
+                                data: data.array[data.tickers[i]],
+                                borderColor: generateRandomColor(),
+                                pointRadius: pointRadius,
+                                pointHoverRadius: pointHoverRadius
+                            }
+                        }
+
+                        var ctx = document.getElementById("myChart3").getContext('2d');
+                        myChart3 = plot(ctx, 'line','Dates', 'Growth', labels, datasets);
+                    }
+
+
+                }
+            })
+        }
+    })
+
+    $("#form4 button").click(function (event) {
+        input = $("#form4 input[type='text']").val().trim();
+        if (input == '') {
+            alert("Enter a ticker");
+        }
+        else if (!/^[a-zA-Z]+$/.test(input)) {
+            alert("Enter proper ticker");
+        }
+
+        else {
+            $.ajax({
+                method: "POST",
+                url: "{% url 'riskOfStock' %}",
+                data: {
+                    stock: input,
+                    time: $("#form4 select").find(":selected").val(),
+                    csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
+                },
+                success: function (data) {
+                    if (data.status == 0) {
+                        alert("Enter a valid ticker");
+                    }
+                    else {
+                        $("#form4 .outputText").remove();
+                        $("#form4").append($("<div>").addClass("outputText").html("Risk: " + (data.risk).toFixed(2) + "%"));
+                    }
+
+
+                }
+            })
+        }
+    })
+
+    $("#form5 button").click(function (event) {
+        initialAmount = $("#form5 input[name='initialAmount']").val();
+        yearsInvested = $("#form5 input[name='yearsInvested']").val();
+        rateOfInterest = $("#form5 input[name='rateOfInterest']").val();
+
+
+        if (initialAmount == '' || yearsInvested == '' || rateOfInterest == '') {
+            alert("Enter all inputs");
+        }
+        else if (!/^[+]?([0-9]+([.][0-9]*)?|[.][0-9]+)$/.test(initialAmount) || !/^[+]?[0-9]+$/.test(yearsInvested) || !/^[+]?([0-9]+([.][0-9]*)?|[.][0-9]+)$/.test(rateOfInterest)) {
+            alert("Enter valid numbers");
+        }
+        else {
+            initialAmount = parseFloat(initialAmount);
+            yearsInvested = parseInt(yearsInvested);
+            rateOfInterest = parseFloat(rateOfInterest);
+            $.ajax({
+                method: "POST",
+                url: "{% url 'compoundInterest' %}",
+                data: {
+                    initialAmount: initialAmount,
+                    yearsInvested: yearsInvested,
+                    rateOfInterest: rateOfInterest,
+                    csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
+                },
+                success: function (data) {
+                    $("#form5 .outputText").remove();
+                    $("#form5").append($("<div>").addClass("outputText").html("Total Earnings: ₹" + (data.totalEarnings).toFixed(2)));
+
+                }
+            })
+        }
+    })
+
+    $("#form6 button").click(function (event) {
+        input = $("#form6 input[type='text']").val().trim();
+        if (input == '') {
+            alert("Enter a ticker");
+        }
+        else if (!/^[a-zA-Z]+$/.test(input)) {
+            alert("Enter proper ticker");
+        }
+
+        else {
+            $.ajax({
+                method: "POST",
+                url: "{% url 'totalReturnsOfStock' %}",
+                data: {
+                    stock: input,
+                    time: $("#form6 select").find(":selected").val(),
+                    csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
+                },
+                success: function (data) {
+                    if (data.status == 0) {
+                        alert("Enter a valid ticker");
+                    }
+                    else {
+                        $("#form6 .outputText").remove();
+                        $("#form6").append($("<div>").addClass("outputText").html("Total Returns: " + (data.total_returns).toFixed(2) + "%"));
+                    }
+
+
+                }
+            })
+        }
+    })
+
+
+    function plot(ctx,chartType,xlabel, ylabel, labels, datasets) {
+
+        return new Chart(ctx, {
+            type: chartType,
+            data: {
+                labels: labels,
+                datasets: datasets,
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'day',
+                            displayFormats: {
+                                'day': 'dd/MM/yyyy'
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: xlabel,
+                            color: '#ffffff'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: ylabel,
+                            color: '#ffffff'
+                        },
+                        ticks: {
+                            fontSize: 40
+                        }
+                    }
+                },
+                plugins: {
+                    zoom: {
+                        zoom: {
+                            wheel: {
+                                enabled: true,
+                            },
+
+                        },
+                        pan: {
+                            enabled: true,
+                        }
+
+                    },
+                }
+            }
+
+        });
+    }
+
+    $("a").click(function () {
+        $("a").removeClass("active");
+        $(this).addClass("active");
+    })
+
+
+    $("#pointButton").click(function () {
+
+        if (!($("#pointButton").is(":checked"))) {
+            pointRadius = 1;
+            pointHoverRadius = 1;
+        }
+        else {
+            pointRadius = 3;
+            pointHoverRadius = 4;
+        }
+    })
+
+    function checkValid(input) {
+        const stocks = input.split(",");
+        for (i = 0; i < stocks.length; i++) {
+            stock = stocks[i].trim();
+            if (!/^[a-zA-Z]+$/.test(stock)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function generateRandomColor() {
+        var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+        return randomColor;
+    }
+
+
+</script>

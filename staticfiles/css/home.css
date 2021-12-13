@@ -1,0 +1,369 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300&display=swap');
+
+:root {
+    --main-color: linear-gradient(45deg,#03a9f4, #007bb4);
+    --text-color: white;
+    --button-color: #03a9f4;
+    --hover-color: #006368;
+    --back-color: #1F1E2C;
+    --active-color: #292A3E;
+}
+
+html {
+    zoom: 0.8;
+    zoom: 80%;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    list-style-type: none;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.block {
+    color: var(--text-color);
+    width: 80%;
+    min-width: 500px;
+    padding: 0px 20px 20px 20px;
+    margin: 20px;
+    background-color: #292A3E;
+    box-shadow: 1px 1px 5px rgba(139, 139, 139, 0.2);
+    text-align: center;
+
+}
+
+.block * {
+    margin: 10px 0px;
+}
+
+.block input,
+select {
+    background-color: rgb(31, 30, 44);
+    color: var(--text-color);
+    border: none;
+    outline: none;
+    padding: 5px;
+    min-width: 250px;
+    height: 50px;
+}
+
+.block img {
+    width: 100%;
+}
+
+.block div {
+    font-weight: 900;
+}
+
+
+button {
+    background-color: var(--button-color);
+    color: #fff;
+    padding: .5rem 1rem;
+    border: 1px solid var(--button-color);
+}
+
+button:hover {
+    background-color: var(--hover-color);
+    border-color: var(--hover-color);
+}
+
+
+h2 {
+    font-family: "Montserrat", sans-serif;
+    width: 100%;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--text-color);
+    text-align: center;
+
+}
+
+i {
+    padding-right: 1rem;
+}
+
+/* pointbutton */
+
+
+input[type="checkbox"] {
+    position: relative;
+    width: 80px;
+    height: 40px;
+    -webkit-appearance: none;
+    background: #c6c6c6;
+    outline: none;
+    border-radius: 20px;
+    transition: .5s;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, .2);
+}
+
+input:checked[type="checkbox"] {
+    background: var(--button-color);
+}
+
+input[type="checkbox"]:before {
+    content: '';       
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    top: 0;
+    left: 0;
+    background: #fff;
+    transform: scale(1.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
+    transition: .5s;
+}
+
+input:checked[type="checkbox"]:before {
+    left: 40px;
+}
+
+
+/* Sidebar and layout*/
+
+
+
+
+
+
+
+.sidebar {
+    width: 345px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: var(--main-color);
+    z-index: 100;
+    transition: width 300ms;
+}
+
+.sidebar-brand {
+    height: 90px;
+    padding: 1rem 0rem 1rem 2rem;
+    color: #fff;
+}
+
+.sidebar-brand i {
+    display: inline-block;
+    padding-right: 1rem;
+}
+
+.sidebar-menu {
+    margin-top: 1rem;
+}
+
+.sidebar-menu li {
+    width: 100%;
+    margin-bottom: 1.7rem;
+    padding-left: 1rem;
+}
+
+.sidebar-menu a {
+    padding-left: 1rem;
+    display: block;
+    color: #fff;
+    font-size: 1.1rem;
+}
+
+.sidebar-menu a.active {
+    background: var(--active-color);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color: white;
+    border-radius: 30px 0px 0px 30px;
+}
+
+.sidebar-menu a span:first-child {
+    font-size: 1.5rem;
+    padding-right: 1rem;
+}
+
+#nav-toggle:checked+.sidebar {
+    width: 70px;
+}
+
+#nav-toggle:checked+.sidebar .sidebar-brand,
+#nav-toggle:checked+.sidebar li {
+    padding-left: 1rem;
+    text-align: center;
+}
+
+#nav-toggle:checked+.sidebar li a {
+    padding-left: 0rem;
+}
+
+#nav-toggle:checked+.sidebar .sidebar-brand h1 span:last-child,
+#nav-toggle:checked+.sidebar li a span:last-child {
+    display: none;
+}
+
+#nav-toggle:checked~.main-content {
+    margin-left: 70px;
+}
+
+#nav-toggle:checked~.main-content header {
+    width: 100%;
+    left: 70px;
+}
+
+.main-content {
+    transition: margin-left 300ms;
+    margin-left: 345px;
+}
+
+header {
+    color: var(--text-color);
+    background: var(--back-color);
+    border-bottom: 1px solid white;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    left: 345px;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+    transition: left 300ms;
+}
+
+#nav-toggle {
+    display: none;
+}
+
+header label span {
+    font-size: 1.7rem;
+    padding-right: 1rem;
+}
+
+
+
+main {
+    padding: 2rem 1.5rem;
+    background: var(--back-color);
+    min-height: calc(126.5vh - 90px);
+}
+
+
+@media only screen and (max-width: 1200px) {
+    .sidebar {
+        width: 70px;
+    }
+
+    .sidebar .sidebar-brand,
+    .sidebar li {
+        padding-left: 1rem;
+        text-align: center;
+    }
+
+    .sidebar li a {
+        padding-left: 0rem;
+    }
+
+    .sidebar .sidebar-brand h1 span:last-child,
+    .sidebar li a span:last-child {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 70px;
+    }
+
+    .main-content header {
+        width: 100%;
+        left: 70px;
+    }
+
+    .sidebar:hover {
+        width: 345px;
+        z-index: 200;
+    }
+
+    .sidebar:hover .sidebar-brand,
+    .sidebar:hover li {
+        padding-left: 2rem;
+        text-align: left;
+    }
+
+    .sidebar:hover li a {
+        padding-left: 1rem;
+    }
+
+    .sidebar:hover .sidebar-brand h1 span:last-child,
+    .sidebar:hover li a span:last-child {
+        display: inline;
+    }
+
+
+}
+
+
+@media only screen and (max-width:768px) {
+
+    .sidebar {
+        left: -100% !important;
+    }
+
+    .main-content {
+        width: 100%;
+        margin-left: 0rem;
+    }
+
+    header {
+        width: 100% !important;
+        left: 0 !important;
+    }
+
+    #nav-toggle:checked+.sidebar {
+        left: 0 !important;
+        z-index: 100;
+        width: 345px;
+    }
+
+
+
+    #nav-toggle:checked+.sidebar .sidebar-brand,
+    #nav-toggle:checked+.sidebar li {
+        padding-left: 1rem;
+        text-align: left;
+    }
+
+    #nav-toggle:checked+.sidebar li a {
+        padding-left: 1rem;
+    }
+
+    #nav-toggle:checked+.sidebar .sidebar-brand h1 span:last-child,
+    #nav-toggle:checked+.sidebar li a span:last-child {
+        display: inline;
+    }
+
+    #nav-toggle:checked~.main-content {
+        margin-left: 0rem !important;
+    }
+
+
+}
+
+
+@media only screen and (max-width:560px) {
+    header {
+        position: fixed;
+    }
+
+    main {
+        margin-top: 80px;
+    }
+}  
