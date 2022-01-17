@@ -8,8 +8,5 @@ Primary Azure Technology: App Service, Azure Monitor, Azure Active Directory
 
 For FRT Internship,
 
-Website link: https://nse-stock-risk-return-calculator.azurewebsites.net/ 
-**(Currently, Authentication Restrict Access is set to "Allow unauthenticated requests" for evaluation of the project)**
-
 Project video link: https://drive.google.com/file/d/12EBsQ3uCw_x1Rott-9SuumKOOeXPG42X/view?usp=sharing
 
