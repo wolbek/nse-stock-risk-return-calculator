@@ -10,3 +10,27 @@ For FRT Internship,
 
 Project video link: https://drive.google.com/file/d/12EBsQ3uCw_x1Rott-9SuumKOOeXPG42X/view?usp=sharing
 
+TO USE THE PROJECT:
+
+Clone the project using:  
+git clone https://github.com/wolbek/nse-stock-risk-return-calculator.git
+
+Change your path to the project in cli
+
+Install virtual env using:  
+pip install virtualenv  
+
+Make virtual environment using:  
+virtualenv venv  
+
+Activate virtual environment using:  
+.\venv\Scripts\activate  
+
+Install requirements.txt using:  
+pip install -r requirements.txt  
+
+Run the project using:  
+python manage.py runserver  
+
+In the browser open:  
+localhost:8000  
