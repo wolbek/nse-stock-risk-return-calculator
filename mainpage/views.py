@@ -92,8 +92,7 @@ def compoundInterest(request):
     amount=float(request.POST['initialAmount'])
     yearsInvested=int(request.POST['yearsInvested'])
     rateOfInterest=float(request.POST['rateOfInterest'])
-    for i in range(1,yearsInvested+1):
-        amount=amount+(rateOfInterest/100)*amount
+    amount=amount*(1+rateOfInterest/100)**yearsInvested
     outputData={
         "totalEarnings":amount,
     }
@@ -102,22 +101,14 @@ def compoundInterest(request):
 @api_view(['POST'])
 def totalReturnsOfStock(request):   
     stock=request.POST['stock'].strip()+".NS"   
-    alldata = yf.download(stock, period='max')   
     data = yf.download(stock, period=request.POST['time'])   
     
     if len(data)==0:
         return Response({"status":0})    
 
-    data=alldata[-len(data)-1:]     
-    
-    #Taking dividends of the interval    
-    dividend=0  
-    dividendData=yf.Ticker(stock).dividends    
-    for i in dividendData.index:
-        if i>data.index[0] and i<data.index[-1]:
-            dividend+=(data.loc[i]['Close']*dividendData.loc[i])/100            
-    
-    total_returns=((data.iloc[len(data)-1,3]-data.iloc[0,3]+dividend)/data.iloc[0,3])*100
+    # Not taking dividends of the interval    
+
+    total_returns=((data.iloc[-1,3]-data.iloc[0,3])/data.iloc[0,3])*100
     outputData={
         "status":1,
         "total_returns":total_returns,
