@@ -246,7 +246,7 @@
                         if (myChart1)
                             myChart1.destroy();
                         labels = data.date;
-                        items = data.price;
+                        items = Object.values(data.price)[0];
 
                         var datasets = [{
                             label: 'Price Of Stock',
